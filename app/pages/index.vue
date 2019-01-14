@@ -3,18 +3,19 @@
     <div>
       <logo/>
       <h1 class="title">
-        notozeki.works
+        notozeki.works version 2
+        <small class="wip">(WIP)</small>
       </h1>
       <h2 class="subtitle">
-        My riveting Nuxt.js project
+        Coming in Spring 2019.
       </h2>
       <div class="links">
         <a
-          href="https://nuxtjs.org/"
+          href="https://notozeki.works/"
           target="_blank"
-          class="button--green">Documentation</a>
+          class="button--green">Current Version</a>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/notozeki/v2.notozeki.works"
           target="_blank"
           class="button--grey">GitHub</a>
       </div>
@@ -33,9 +34,9 @@ export default {
 </script>
 
 <style>
-
 .container {
   min-height: 100vh;
+  max-width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,15 +47,21 @@ export default {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
-  font-weight: 300;
-  font-size: 100px;
+  font-weight: 400;
+  font-size: 42px;
   color: #35495e;
   letter-spacing: 1px;
 }
 
+.wip {
+  font-size: 60%;
+  color: grey;
+  vertical-align: middle;
+}
+
 .subtitle {
   font-weight: 300;
-  font-size: 42px;
+  font-size: 24px;
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
