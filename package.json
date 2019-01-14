@@ -1,7 +1,7 @@
 {
   "name": "notozeki.works",
-  "version": "1.0.0",
-  "description": "My riveting Nuxt.js project",
+  "version": "2.0.0-alpha",
+  "description": "[WIP] Next generation https://notozeki.works/",
   "author": "notozeki",
   "private": true,
   "scripts": {
