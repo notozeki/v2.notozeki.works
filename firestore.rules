@@ -5,17 +5,7 @@ service cloud.firestore {
     }
 
     match /admins/{uid} {
-      allow read: if isAdmin() && request.auth.uid == uid;
-    }
-    match /posts/{post} {
-      allow write: if isAdmin();
-    }
-
-    match /users/{user} {
-      allow read;
-    }
-    match /posts/{post} {
-      allow read;
+      allow get: if isAdmin() && request.auth.uid == uid;
     }
   }
 }
