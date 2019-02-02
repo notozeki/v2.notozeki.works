@@ -26,10 +26,21 @@ export default {
       AuthService.sendSignInLink(this.email, `${window.location.origin}/auth/complete`).then(() => {
         this.loading = false
         this.email = ''
-        alert('ログインリンクを送信しました')
+        this.showSuccessMessage()
       }).catch(error => {
-        alert('エラーが発生しました')
+        this.loading = false
+        this.showErrorMessage()
       })
+    },
+  },
+  notifications: {
+    showSuccessMessage: {
+      message: 'ログインリンクを送信しました',
+      type: 'success',
+    },
+    showErrorMessage: {
+      message: 'ログイン中にエラーが発生しました。もう一度お試しください',
+      type: 'error',
     },
   },
 }

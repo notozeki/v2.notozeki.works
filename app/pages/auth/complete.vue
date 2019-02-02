@@ -1,9 +1,6 @@
 <template>
-  <div v-if="!error">
+  <div>
     ログインしています…
-  </div>
-  <div v-else>
-    正しいリンクではありません。もう一度<nuxt-link to="/auth">ログイン</nuxt-link>してください。
   </div>
 </template>
 
@@ -11,20 +8,30 @@
 import * as AuthService from '~/services/AuthService'
 
 export default {
-  data: () => ({
-    error: false,
-  }),
   mounted() {
-    if (AuthService.isMailLinkSignIn(window.location.href)) {
-      AuthService.completeMailLinkSignIn(window.location.href).then(() => {
+    const link = window.location.href
+    if (AuthService.isMailLinkSignIn(link)) {
+      AuthService.completeMailLinkSignIn(link).then(() => {
         this.$router.replace('/')
-        alert('ログインしました')
+        this.showSuccessMessage()
       }).catch(() => {
-        alert('エラーが発生しました')
+        this.$router.replace('/auth')
+        this.showErrorMessage()
       })
     } else {
-      this.error = true
+      this.$router.replace('/auth')
+      this.showErrorMessage()
     }
+  },
+  notifications: {
+    showSuccessMessage: {
+      message: 'ログインしました',
+      type: 'success',
+    },
+    showErrorMessage: {
+      message: 'ログインリンクが無効です。もう一度ログインしてください',
+      type: 'error',
+    },
   },
 }
 </script>
