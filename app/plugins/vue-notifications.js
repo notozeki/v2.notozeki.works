@@ -1,16 +1,20 @@
 import Vue from 'vue'
 import VueNotifications from 'vue-notifications'
+import UIkit from 'uikit'
 
-// TODO: Implement seriously.
-const notify = ({ title, message, type, timeout, cb }) => {
-  alert(message)
+const notify = status => ({ title, message, type, timeout, cb }) => {
+  UIkit.notification(message, {
+    status,
+    timeout,
+    pos: 'bottom-right',
+  })
 }
 
 const options = {
-  success: notify,
-  error: notify,
-  info: notify,
-  warn: notify,
+  success: notify('success'),
+  error: notify('danger'),
+  info: notify('primary'),
+  warn: notify('warning'),
 }
 
 Vue.use(VueNotifications, options)
