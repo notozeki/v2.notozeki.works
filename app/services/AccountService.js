@@ -1,4 +1,5 @@
 import firebase from '~/firebase'
+import md5 from 'blueimp-md5'
 
 const getAdmin = async (uid) => {
   try {
@@ -23,10 +24,20 @@ export const onAccountChanged = (listener) => {
     if (user) {
       const admin = await getAdmin(user.uid)
 
+      // Load icon from Gravatar
+      // TODO: Use `user.photoUrl` after implementing account settings.
+      let gravatarUrl = null
+      if (user.email) {
+        const hash = md5(user.email)
+        gravatarUrl = `https://www.gravatar.com/avatar/${hash}`
+      }
+
       listener({
         uid: user.uid,
         name: user.displayName,
-        icon: user.photoUrl,
+        email: user.email,
+        //icon: user.photoUrl,
+        icon: gravatarUrl,
         isAdmin: !!admin,
       })
     } else {
