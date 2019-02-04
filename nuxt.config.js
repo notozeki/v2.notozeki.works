@@ -44,6 +44,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '~/assets/common.scss',
     '~/assets/uikit.scss',
   ],
 
