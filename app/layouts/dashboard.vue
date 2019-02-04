@@ -1,16 +1,23 @@
 <template>
   <div v-if="currentUser && currentUser.isAdmin">
-    <h1>ダッシュボード</h1>
-
-    <nuxt/>
+    <dashboard-layout>
+      <nuxt/>
+    </dashboard-layout>
+  </div>
+  <div v-else>
+    loading...
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import * as AccountService from '~/services/AccountService'
+import DashboardLayout from '~/components/DashboardLayout'
 
 export default {
+  components: {
+    DashboardLayout,
+  },
   computed: mapState(['currentUser']),
   mounted() {
     AccountService.onAccountChanged(user => {
