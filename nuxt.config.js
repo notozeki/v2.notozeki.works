@@ -44,6 +44,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '~/assets/uikit.scss',
   ],
 
   /*
@@ -51,6 +52,7 @@ module.exports = {
   */
   plugins: [
     { src: '~/plugins/vue-notifications', ssr: false },
+    { src: '~/plugins/uikit', ssr: false },
   ],
 
   /*

@@ -25,6 +25,7 @@
     "cross-env": "^5.2.0",
     "firebase": "^5.8.0",
     "nuxt": "^2.0.0",
+    "uikit": "^3.0.3",
     "vue-notifications": "^0.9.0"
   },
   "devDependencies": {
@@ -32,7 +33,9 @@
     "eslint": "^5.0.1",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-vue": "^4.0.0",
+    "node-sass": "^4.11.0",
     "nodemon": "^1.11.0",
+    "sass-loader": "^7.1.0",
     "vuepress": "^1.0.0-alpha.30"
   }
 }
