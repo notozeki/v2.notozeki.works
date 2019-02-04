@@ -5,7 +5,13 @@
     </h3>
     <ul class="sidebar-section uk-nav uk-nav-default">
       <li class="uk-nav-header">Contents</li>
-      <li><a href="#todo"><span uk-icon="icon: pencil"/> Drawings</a></li>
+      <nuxt-link
+        to="/dashboard/drawings"
+        tag="li"
+        active-class="uk-active"
+      >
+        <a><span uk-icon="icon: pencil"/> Drawings</a>
+      </nuxt-link>
     </ul>
   </aside>
 </template>

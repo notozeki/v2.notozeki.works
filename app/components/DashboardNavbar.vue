@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="uk-navbar-container uk-background-primary uk-light"
+    class="uk-navbar-container uk-background-primary uk-light uk-box-shadow-small"
     uk-navbar
   >
     <div class="uk-navbar-left">
