@@ -57,6 +57,7 @@
         <div class="uk-margin uk-flex uk-flex-between uk-flex-middle">
           <label v-if="!model.id">
             <input
+              v-model="model.enableTweet"
               type="checkbox"
               class="uk-checkbox"
             >
