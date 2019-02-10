@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import DashboardNavbar from '~/components/DashboardNavbar'
-import DashboardSidebar from '~/components/DashboardSidebar'
+import Navbar from '~/components/dashboard/Navbar'
+import Sidebar from '~/components/dashboard/Sidebar'
 
 export default {
   components: {
-    navbar: DashboardNavbar,
-    sidebar: DashboardSidebar,
+    Navbar,
+    Sidebar,
   },
 }
 </script>

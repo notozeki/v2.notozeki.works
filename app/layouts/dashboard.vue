@@ -1,8 +1,8 @@
 <template>
   <div v-if="currentUser && currentUser.isAdmin">
-    <dashboard-layout>
+    <layout>
       <nuxt/>
-    </dashboard-layout>
+    </layout>
   </div>
   <div v-else>
     loading...
@@ -12,11 +12,11 @@
 <script>
 import { mapState } from 'vuex'
 import * as AccountService from '~/services/AccountService'
-import DashboardLayout from '~/components/DashboardLayout'
+import Layout from '~/components/dashboard/Layout'
 
 export default {
   components: {
-    DashboardLayout,
+    Layout,
   },
   computed: mapState(['currentUser']),
   mounted() {

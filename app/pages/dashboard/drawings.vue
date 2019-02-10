@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import DrawingForm from '@/components/DrawingForm'
+import DrawingForm from '@/components/dashboard/DrawingForm'
 import Drawing from '@/models/Drawing'
 
 export default {
