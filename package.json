@@ -35,9 +35,13 @@
     "eslint": "^5.0.1",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-vue": "^4.0.0",
+    "firebase-admin": "^7.0.0",
     "node-sass": "^4.11.0",
     "nodemon": "^1.11.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
     "sass-loader": "^7.1.0",
+    "twitter": "^1.7.1",
     "vuepress": "^1.0.0-alpha.30"
   }
 }
