@@ -103,7 +103,7 @@ export default {
       // FIXME: Very fat logic.
       const drawingsByYear = {}
       for (const d of state.dashboard.drawing.drawings) {
-        const year = new Date(d.createdAt).getFullYear()
+        const year = d.createdAt.getFullYear()
         if (!drawingsByYear[year]) {
           drawingsByYear[year] = []
         }
@@ -132,11 +132,38 @@ export default {
         this.$uikit.modal(this.$refs.modal).show()
       })
     },
-    saveDrawing(drawing, done) {
-      // TODO
-      setTimeout(done, 1000)
+    async saveDrawing(drawing, done) {
+      const timestamp = new Date()
+      let newDoc = false
+
+      if (!drawing.id) {
+        drawing.id = timestamp.getTime()
+        newDoc = true
+      }
+      if (!drawing.createdAt) {
+        drawing.createdAt = timestamp
+      }
+      drawing.postedAt = timestamp
+
+      this.$store.dispatch('dashboard/drawing/saveDrawing', { drawing }).then(() => {
+        if (newDoc) {
+          this.showCreateSuccessMessage()
+        } else {
+          this.showUpdateSuccessMessage()
+        }
+        this.$uikit.modal(this.$refs.modal).hide()
+        done()
+      }).catch(error => {
+        console.error(error)
+        if (newDoc) {
+          this.showCreateErrorMessage()
+        } else {
+          this.showUpdateErrorMessage()
+        }
+        done()
+      })
     },
-    formatTime(timestamp) {
+    formatTime(date) {
       function pad(num) {
         if (num < 10) {
           return '0' + num
@@ -145,7 +172,6 @@ export default {
         }
       }
 
-      const date = new Date(timestamp)
       return [
         date.getFullYear(),
         '/',
@@ -157,6 +183,24 @@ export default {
         ':',
         pad(date.getMinutes()),
       ].join('')
+    },
+  },
+  notifications: {
+    showCreateSuccessMessage: {
+      message: 'おえかきを投稿しました💪',
+      type: 'success',
+    },
+    showCreateErrorMessage: {
+      message: 'おえかきの投稿に失敗しました😨',
+      type: 'error',
+    },
+    showUpdateSuccessMessage: {
+      message: 'おえかきを更新しました💪',
+      type: 'success',
+    },
+    showUpdateErrorMessage: {
+      message: 'おえかきの更新に失敗しました😨',
+      type: 'error',
     },
   },
 }
