@@ -13,7 +13,10 @@
       </div>
     </header>
 
-    <div class="uk-padding uk-container">
+    <div
+      v-if="!loading"
+      class="uk-padding uk-container"
+    >
       <div
         v-for="({ year, drawings }) in drawingsByYear"
         :key="year"
@@ -24,26 +27,41 @@
         </h4>
 
         <div
-          class="uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid-small uk-margin-large-bottom"
+          class="uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid-small uk-grid-match uk-margin-large-bottom"
           uk-grid
         >
           <a
             v-for="drawing in drawings"
             :key="drawing.id"
             href="#"
+            style="text-decoration: none;"
             @click.prevent="showForm(drawing)"
           >
             <div class="uk-card uk-card-default uk-card-small uk-card-hover">
-              <div class="uk-card-media-top">
-                <img :src="drawing.imageUrl">
+              <div
+                class="uk-card-media-top uk-height-medium"
+                style="background: #555;"
+              >
+                <img
+                  :src="drawing.imageUrl"
+                  style="width: 100%; height: 100%; object-fit: contain;"
+                >
               </div>
-              <div class="uk-card-body">
-                <p>{{ drawing.caption }}</p>
+              <div class="uk-card-body uk-text-small">
+                <small class="uk-text-muted uk-flex-inline uk-flex-middle">
+                  <span uk-icon="icon: clock; ratio: 0.6"/>
+                  &nbsp;
+                  {{ formatTime(drawing.createdAt) }}
+                </small>
+                <p class="uk-margin-remove">{{ drawing.caption }}</p>
               </div>
             </div>
           </a>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <p>loading...</p>
     </div>
 
     <div
@@ -68,6 +86,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import DrawingForm from '@/components/dashboard/DrawingForm'
 import Drawing from '@/models/Drawing'
 
@@ -77,76 +96,35 @@ export default {
     DrawingForm,
   },
   data: () => ({
-    // dummy
-    drawingsByYear: [
-      {
-        year: 2019,
-        drawings: [
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/Dy-m3z9VsAAQqR3?format=jpg&name=medium',
-            imageUrl: 'https://pbs.twimg.com/media/Dy-m3z9VsAAQqR3?format=jpg&name=medium',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DyfwhnBUUAEUObR?format=jpg&name=medium',
-            imageUrl: 'https://pbs.twimg.com/media/DyfwhnBUUAEUObR?format=jpg&name=medium',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/Dyft75KUYAAt96k?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/Dyft75KUYAAt96k?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DwuBgReVAAEZhub?format=jpg&name=medium',
-            imageUrl: 'https://pbs.twimg.com/media/DwuBgReVAAEZhub?format=jpg&name=medium',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/Dwpo7d3U0AAzf2f?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/Dwpo7d3U0AAzf2f?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DwkIP2cU8AA1KSi?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/DwkIP2cU8AA1KSi?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DwUpNDeVYAAH-N5?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/DwUpNDeVYAAH-N5?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-        ],
-      },
-      {
-        year: 2018,
-        drawings: [
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DvwLyHjVYAIWwtN?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/DvwLyHjVYAIWwtN?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/Du30PykUcAAvLv8?format=jpg&name=large',
-            imageUrl: 'https://pbs.twimg.com/media/Du30PykUcAAvLv8?format=jpg&name=large',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DueWZUvV4AAuuef?format=jpg&name=medium',
-            imageUrl: 'https://pbs.twimg.com/media/DueWZUvV4AAuuef?format=jpg&name=medium',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-          new Drawing({
-            id: 'https://pbs.twimg.com/media/DtV51yiUUAA0Wg3?format=jpg&name=medium',
-            imageUrl: 'https://pbs.twimg.com/media/DtV51yiUUAA0Wg3?format=jpg&name=medium',
-            caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-          }),
-        ],
-      },
-    ],
     editingDrawing: null,
   }),
+  computed: mapState({
+    drawingsByYear: state => {
+      // FIXME: Very fat logic.
+      const drawingsByYear = {}
+      for (const d of state.dashboard.drawing.drawings) {
+        const year = new Date(d.createdAt).getFullYear()
+        if (!drawingsByYear[year]) {
+          drawingsByYear[year] = []
+        }
+        drawingsByYear[year].push(d)
+      }
+
+      const years = Object.keys(drawingsByYear).sort().reverse()
+      const drawingsByYearList = []
+      for (const year of years) {
+        drawingsByYearList.push({
+          year,
+          drawings: drawingsByYear[year],
+        })
+      }
+      return drawingsByYearList
+    },
+    loading: state => state.dashboard.drawing.loading,
+  }),
+  mounted() {
+    this.$store.dispatch('dashboard/drawing/fetchDrawings')
+  },
   methods: {
     showForm(drawing = new Drawing()) {
       this.editingDrawing = drawing
@@ -157,6 +135,28 @@ export default {
     saveDrawing(drawing, done) {
       // TODO
       setTimeout(done, 1000)
+    },
+    formatTime(timestamp) {
+      function pad(num) {
+        if (num < 10) {
+          return '0' + num
+        } else {
+          return '' + num
+        }
+      }
+
+      const date = new Date(timestamp)
+      return [
+        date.getFullYear(),
+        '/',
+        pad(date.getMonth() + 1),
+        '/',
+        pad(date.getDate()),
+        ' ',
+        pad(date.getHours()),
+        ':',
+        pad(date.getMinutes()),
+      ].join('')
     },
   },
 }
