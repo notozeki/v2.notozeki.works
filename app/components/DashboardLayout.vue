@@ -42,5 +42,6 @@ export default {
 #main {
   grid-area: main;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 </style>
