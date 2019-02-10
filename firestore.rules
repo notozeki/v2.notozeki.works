@@ -7,5 +7,10 @@ service cloud.firestore {
     match /admins/{uid} {
       allow get: if isAdmin() && request.auth.uid == uid;
     }
+
+    match /drawings/{drawingId} {
+      allow read;
+      allow write: if isAdmin();
+    }
   }
 }
