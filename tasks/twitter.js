@@ -87,8 +87,8 @@ module.exports.import = async ([filename]) => {
       imageUrl: imageUrl,
       caption: d.caption,
       sourceUrl: d.tweetUrl,
-      createdAt: d.createdAt,
-      postedAt: d.createdAt,
+      createdAt: new Date(d.createdAt),
+      postedAt: new Date(d.createdAt),
       tweetUrl: d.tweetUrl,
       tags: [],
     }
