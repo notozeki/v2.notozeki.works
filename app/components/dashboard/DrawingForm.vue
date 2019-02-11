@@ -4,14 +4,19 @@
     uk-grid
     @submit.prevent="handleSubmit"
   >
-    <div
-      class="uk-width-2-3@s uk-card-media-left uk-height-1-1"
-      style="background: #555;"
-    >
+    <div class="uk-width-2-3@s uk-card-media-left uk-height-1-1 image-container">
+      <button
+        v-if="model.imageFile"
+        type="button"
+        class="image-remove-button"
+        @click="detachImage"
+      >
+        <span uk-icon="icon: close; ratio: 1.5;"/>
+      </button>
       <img
-        v-if="model.imageUrl"
-        :src="model.imageUrl"
-        style="width: 100%; height: 100%; object-fit: contain;"
+        v-if="previewUrl || model.imageUrl"
+        :src="previewUrl || model.imageUrl"
+        class="image-contain"
       >
       <input
         v-else
@@ -85,13 +90,14 @@
 
 <script>
 import Drawing from '@/models/Drawing'
+import ImageFile from '@/models/ImageFile'
 
 function formize(drawing) {
   return {
     ...drawing,
     createdAt: drawing.createAt ? drawing.createdAt.toISOString().slice(0, 19) : null,
     tags: drawing.tags.join(', '),
-    image: null,
+    imageFile: null,
   }
 }
 
@@ -110,18 +116,27 @@ export default {
   data() {
     return {
       model: formize(this.drawing),
+      previewUrl: null,
       loading: false,
     }
   },
   watch: {
     drawing(val) {
       this.model = formize(val)
+      this.previewUrl = null
     },
   },
   methods: {
     attachImage(event) {
       const file = event.target.files[0]
-      this.model.image = file
+      this.model.imageFile = new ImageFile(file)
+      this.model.imageFile.toDataUrl().then(dataUrl => {
+        this.previewUrl = dataUrl
+      })
+    },
+    detachImage() {
+      this.model.imageFile = null
+      this.previewUrl = null
     },
     handleSubmit() {
       this.loading = true
@@ -132,3 +147,25 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.image-container {
+  position: relative;
+  background-color: #555;
+}
+
+.image-remove-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  border: none;
+  border-radius: 500px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+</style>

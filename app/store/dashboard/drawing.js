@@ -38,13 +38,27 @@ export const actions = {
     commit('fetchDrawingsEnd', { drawings })
   },
   async saveDrawing({ commit, state }, { drawing }) {
-    // 1. Upload image (if changed)
-    if (drawing.image) {
-      const storageRef = firebase.storage().ref()
-      const ext = drawing.image.name.split('.').pop()
-      const fileRef = storageRef.child(`drawings/${drawing.id}/image1.${ext}`)
+    const timestamp = new Date()
+    let newDoc = false
 
-      const file = await fileRef.put(drawing.image)
+    if (!drawing.id) {
+      drawing.id = timestamp.getTime()
+      newDoc = true
+    }
+    if (!drawing.createdAt) {
+      drawing.createdAt = timestamp
+    }
+    drawing.postedAt = timestamp
+
+    // 1. Upload image (if changed)
+    if (drawing.imageFile) {
+      const hash = await drawing.imageFile.calculateDigest()
+      const ext = 'png' // Fixed value is OK because resizeToFit() always returns PNG image.
+      const blob = await drawing.imageFile.resizeToFit(2048, 2048)
+
+      const storageRef = firebase.storage().ref()
+      const fileRef = storageRef.child(`drawings/${drawing.id}/${hash}.${ext}`)
+      const file = await fileRef.put(blob)
       drawing.imageUrl = await file.ref.getDownloadURL()
     }
 
@@ -68,5 +82,7 @@ export const actions = {
     } else {
       commit('prependDrawing', { drawing })
     }
+
+    return { drawing, newDoc }
   },
 }

@@ -44,7 +44,7 @@
               >
                 <img
                   :src="drawing.imageUrl"
-                  style="width: 100%; height: 100%; object-fit: contain;"
+                  class="image-contain"
                 >
               </div>
               <div class="uk-card-body uk-text-small">
@@ -132,20 +132,8 @@ export default {
         this.$uikit.modal(this.$refs.modal).show()
       })
     },
-    async saveDrawing(drawing, done) {
-      const timestamp = new Date()
-      let newDoc = false
-
-      if (!drawing.id) {
-        drawing.id = timestamp.getTime()
-        newDoc = true
-      }
-      if (!drawing.createdAt) {
-        drawing.createdAt = timestamp
-      }
-      drawing.postedAt = timestamp
-
-      this.$store.dispatch('dashboard/drawing/saveDrawing', { drawing }).then(() => {
+    saveDrawing(drawing, done) {
+      this.$store.dispatch('dashboard/drawing/saveDrawing', { drawing }).then(({ newDoc }) => {
         if (newDoc) {
           this.showCreateSuccessMessage()
         } else {
@@ -155,11 +143,7 @@ export default {
         done()
       }).catch(error => {
         console.error(error)
-        if (newDoc) {
-          this.showCreateErrorMessage()
-        } else {
-          this.showUpdateErrorMessage()
-        }
+        this.showErrorMessage()
         done()
       })
     },
@@ -187,19 +171,15 @@ export default {
   },
   notifications: {
     showCreateSuccessMessage: {
-      message: 'おえかきを投稿しました💪',
+      message: 'おえかきを投稿しました🎉',
       type: 'success',
-    },
-    showCreateErrorMessage: {
-      message: 'おえかきの投稿に失敗しました😨',
-      type: 'error',
     },
     showUpdateSuccessMessage: {
       message: 'おえかきを更新しました💪',
       type: 'success',
     },
-    showUpdateErrorMessage: {
-      message: 'おえかきの更新に失敗しました😨',
+    showErrorMessage: {
+      message: 'おえかきの保存中にエラーが発生しました😨 詳細はコンソールを見てください',
       type: 'error',
     },
   },

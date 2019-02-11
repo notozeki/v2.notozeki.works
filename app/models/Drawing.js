@@ -9,7 +9,8 @@ export default class Drawing {
     tweetUrl = null,     // ?string
     tags = [],           // Array<string>
     enableTweet = false, // boolean
-    image = null,        // ?File
+    // form only fields
+    imageFile = null,    // ?ImageFile
   } = {}) {
     this.id = id
     this.imageUrl = imageUrl
@@ -20,6 +21,6 @@ export default class Drawing {
     this.tweetUrl = tweetUrl
     this.tags = tags
     this.enableTweet = enableTweet
-    this.image = image
+    this.imageFile = imageFile
   }
 }
