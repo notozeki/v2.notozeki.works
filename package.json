@@ -18,7 +18,8 @@
     "firebase:build:functions": "mkdir -p dist/functions/.nuxt/dist/server; cp -R functions/ dist/functions; cp -R .nuxt/dist/server/ dist/functions/.nuxt/dist/server",
     "firebase:clean": "rm -rf dist/{hosting,functions}",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "task": "node tasks/main.js"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
