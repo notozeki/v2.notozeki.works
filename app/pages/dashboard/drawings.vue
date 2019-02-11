@@ -27,36 +27,20 @@
         </h4>
 
         <div
-          class="uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid-small uk-grid-match uk-margin-large-bottom"
+          class="uk-grid-small uk-grid-match uk-margin-large-bottom"
           uk-grid
         >
-          <a
+          <div
             v-for="drawing in drawings"
             :key="drawing.id"
-            href="#"
-            style="text-decoration: none;"
-            @click.prevent="showForm(drawing)"
+            class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-width-1-4@l"
           >
-            <div class="uk-card uk-card-default uk-card-small uk-card-hover">
-              <div
-                class="uk-card-media-top uk-height-medium"
-                style="background: #555;"
-              >
-                <img
-                  :src="drawing.imageUrl"
-                  class="image-contain"
-                >
-              </div>
-              <div class="uk-card-body uk-text-small">
-                <small class="uk-text-muted uk-flex-inline uk-flex-middle">
-                  <span uk-icon="icon: clock; ratio: 0.6"/>
-                  &nbsp;
-                  {{ formatTime(drawing.createdAt) }}
-                </small>
-                <p class="uk-margin-remove">{{ drawing.caption }}</p>
-              </div>
-            </div>
-          </a>
+            <drawing-item
+              :drawing="drawing"
+              @edit="showForm(drawing)"
+              @delete="showDeleteDialog(drawing)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -66,7 +50,7 @@
 
     <div
       v-if="editingDrawing"
-      ref="modal"
+      ref="editModal"
       class="uk-modal-container"
       uk-modal
     >
@@ -82,21 +66,40 @@
         />
       </div>
     </div>
+
+    <div
+      v-if="deletingDrawing"
+      id="deleteModal"
+      ref="deleteModal"
+      uk-modal
+    >
+      <div class="uk-modal-dialog uk-modal-body">
+        <drawing-delete
+          :drawing="deletingDrawing"
+          @delete="deleteDrawing"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import DrawingItem from '@/components/dashboard/DrawingItem'
 import DrawingForm from '@/components/dashboard/DrawingForm'
+import DrawingDelete from '@/components/dashboard/DrawingDelete'
 import Drawing from '@/models/Drawing'
 
 export default {
   layout: 'dashboard',
   components: {
+    DrawingItem,
     DrawingForm,
+    DrawingDelete,
   },
   data: () => ({
     editingDrawing: null,
+    deletingDrawing: null,
   }),
   computed: mapState({
     drawingsByYear: state => {
@@ -129,7 +132,7 @@ export default {
     showForm(drawing = new Drawing()) {
       this.editingDrawing = drawing
       this.$nextTick(() => {
-        this.$uikit.modal(this.$refs.modal).show()
+        this.$uikit.modal(this.$refs.editModal).show()
       })
     },
     saveDrawing(drawing, done) {
@@ -139,7 +142,7 @@ export default {
         } else {
           this.showUpdateSuccessMessage()
         }
-        this.$uikit.modal(this.$refs.modal).hide()
+        this.$uikit.modal(this.$refs.editModal).hide()
         done()
       }).catch(error => {
         console.error(error)
@@ -147,26 +150,22 @@ export default {
         done()
       })
     },
-    formatTime(date) {
-      function pad(num) {
-        if (num < 10) {
-          return '0' + num
-        } else {
-          return '' + num
-        }
-      }
-
-      return [
-        date.getFullYear(),
-        '/',
-        pad(date.getMonth() + 1),
-        '/',
-        pad(date.getDate()),
-        ' ',
-        pad(date.getHours()),
-        ':',
-        pad(date.getMinutes()),
-      ].join('')
+    showDeleteDialog(drawing) {
+      this.deletingDrawing = drawing
+      this.$nextTick(() => {
+        this.$uikit.modal(this.$refs.deleteModal).show()
+      })
+    },
+    deleteDrawing(drawing, done) {
+      this.$store.dispatch('dashboard/drawing/deleteDrawing', { drawing }).then(() => {
+        this.showDeleteSuccessMessage()
+        this.$uikit.modal(this.$refs.deleteModal).hide()
+        done()
+      }).catch(error => {
+        console.error(error)
+        this.showErrorMessage()
+        done()
+      })
     },
   },
   notifications: {
@@ -178,8 +177,12 @@ export default {
       message: 'おえかきを更新しました💪',
       type: 'success',
     },
+    showDeleteSuccessMessage: {
+      message: 'おえかきを削除しました👋',
+      type: 'success',
+    },
     showErrorMessage: {
-      message: 'おえかきの保存中にエラーが発生しました😨 詳細はコンソールを見てください',
+      message: 'エラーが発生しました😨<br>詳細はコンソールを見てください👀',
       type: 'error',
     },
   },

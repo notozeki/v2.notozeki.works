@@ -19,7 +19,10 @@ export const mutations = {
   },
   replaceDrawing(state, { index, drawing }) {
     state.drawings.splice(index, 1, drawing)
-  }
+  },
+  deleteDrawing(state, { index }) {
+    state.drawings.splice(index, 1)
+  },
 }
 
 export const actions = {
@@ -84,5 +87,20 @@ export const actions = {
     }
 
     return { drawing, newDoc }
+  },
+
+  async deleteDrawing({ commit, state }, { drawing }) {
+    // 1. Delete the image from GCS
+    const storage = firebase.storage()
+    const fileRef = storage.refFromURL(drawing.imageUrl)
+    await fileRef.delete()
+
+    // 2. Delete the document from Firestore
+    const ref = firebase.firestore().doc(`drawings/${drawing.id}`)
+    await ref.delete()
+
+    // 3. Update state
+    const index = state.drawings.findIndex(d => d.id === drawing.id)
+    commit('deleteDrawing', { index })
   },
 }
