@@ -62,6 +62,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/palette";
+
+.uk-navbar-container {
+  background-color: $primary-color;
+}
+
 .logo {
   font-size: 1.2rem;
   color: #fff;

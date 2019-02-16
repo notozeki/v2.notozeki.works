@@ -1,10 +1,10 @@
+@import "palette";
+
 // 1. Your custom variables and variable overwrites.
 // $global-link-color: #DA7D02;
-$primary-color: #4497EC;
 $global-font-family: BlinkMacSystemFont, -apple-system, "Hiragino Sans", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 $global-primary-background: $primary-color;
 $navbar-nav-item-height: 52px;
-$navbar-background: $primary-color;
 $navbar-nav-item-text-transform: initial;
 $nav-item-padding-vertical: 8px;
 $dropdown-padding: 15px;
@@ -18,5 +18,3 @@ $dropdown-padding: 15px;
 
 // 4. Import UIkit.
 @import "uikit/src/scss/uikit-theme.scss";
-
-// 5. Custom styles.
