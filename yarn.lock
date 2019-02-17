@@ -4726,7 +4726,7 @@ firebase-admin@^7.0.0:
     "@google-cloud/firestore" "^1.0.1"
     "@google-cloud/storage" "^2.3.0"
 
-firebase@^5.8.0:
+firebase@5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.8.0.tgz#b9669b79cd079004eb7091440b585b322f844fb4"
   integrity sha512-rO9NauWhzmbB0EFh2wOcQ23kfPOPq3VnQnZr2zQTFvLZieLXUkyrj0wydxWCxmR2isZfF5+43nVD6/snMAbFdA==
