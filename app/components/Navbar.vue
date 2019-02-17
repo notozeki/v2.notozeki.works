@@ -3,6 +3,15 @@
     class="uk-navbar-container"
     uk-navbar
   >
+    <div class="uk-navbar-left">
+      <nuxt-link
+        v-if="backButtonRoute"
+        :to="backButtonRoute"
+        class="uk-navbar-item"
+      >
+        <span uk-icon="icon: arrow-left"/>
+      </nuxt-link>
+    </div>
     <div class="uk-navbar-center">
       <div class="uk-navbar-item">
         <nuxt-link
@@ -16,7 +25,25 @@
   </nav>
 </template>
 
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  computed: mapState({
+    backButtonRoute: state => state.backButton.route,
+  }),
+}
+</script>
+
 <style lang="scss" scoped>
+// WORKAROUND of an issue caused by combining .uk-navbar-left and .uk-navbar-center.
+// See https://github.com/uikit/uikit/issues/2597
+.uk-navbar-container {
+  position: relative;
+  min-height: 52px;
+  height: 52px;
+}
+
 .logo {
   font-size: 1.3rem;
   color: #333;

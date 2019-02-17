@@ -9,6 +9,7 @@ import * as AccountService from '@/services/AccountService'
 import Layout from '@/components/Layout'
 
 export default {
+  middleware: 'backButton',
   components: {
     Layout,
   },
