@@ -50,6 +50,20 @@ import { mapState } from 'vuex'
 import { formatDatetime } from '@/utils/time'
 
 export default {
+  head() {
+    return {
+      meta: [
+        // Twitter Cards tags
+        { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+        { hid: 'twitter:description', name: 'twitter:description', content: this.drawing.caption },
+        { hid: 'twitter:image', name: 'twitter:image', content: this.drawing.imageUrl },
+
+        // OGP tags
+        { hid: 'og:description', property: 'og:description', content: this.drawing.caption },
+        { hid: 'og:image', property: 'og:image', content: this.drawing.imageUrl },
+      ],
+    }
+  },
   async asyncData({ store, params, error }) {
     const drawing = await store.dispatch('drawing/fetchDrawing', { drawingId: params.id })
     if (drawing) {
